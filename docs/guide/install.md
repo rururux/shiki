@@ -263,16 +263,17 @@ Meanwhile, it's also recommended to use the [Fine-grained Bundle](#fine-grained-
 import js from '@shikijs/langs/javascript'
 import nord from '@shikijs/themes/nord'
 import { createHighlighterCore } from 'shiki/core'
-import { loadWasm } from 'shiki/engine/oniguruma'
+import { createOnigurumaEngine } from 'shiki/engine/oniguruma'
 
 // import wasm as assets
-await loadWasm(import('shiki/onig.wasm'))
+const onigurumaEngine = await createOnigurumaEngine(import('shiki/onig.wasm'))
 
 export default {
   async fetch() {
     const highlighter = await createHighlighterCore({
       themes: [nord],
       langs: [js],
+      engine: onigurumaEngine,
     })
 
     return new Response(highlighter.codeToHtml('console.log(\'shiki\');', {
